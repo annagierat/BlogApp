@@ -2,6 +2,7 @@ package com.anna.gierat.blogApplication.controller;
 
 
 import com.anna.gierat.blogApplication.model.Post;
+import com.anna.gierat.blogApplication.model.PostComment;
 import com.anna.gierat.blogApplication.repository.PostRepository;
 import javafx.geometry.Pos;
 import jdk.nashorn.internal.objects.annotations.Getter;
@@ -41,10 +42,14 @@ public class MainController {
 
     @PostMapping("/addPost")
     public String addPost(@RequestParam (value="title") String title,
-                          @RequestParam(value="content") String content){
+                          @RequestParam(value="content") String content,
+                          @RequestParam(value="comment") String comment){
         Post post = new Post(title, content);
+        PostComment postComment = new PostComment();
+        postComment.setComment(comment);
+        post.addComment(postComment);
         postRepository.save(post);
-        System.out.println("Params: " + title + ", " + content);
+        //System.out.println("Params: " + title + ", " + content);
         return "addPost";
     }
 
@@ -54,7 +59,7 @@ public class MainController {
         return "posts";
     }
     @GetMapping("/posts/{title}")
-    public String getPostsById(@PathVariable String title,Model model ) {
+    public String getPostsByTitle(@PathVariable String title,Model model ) {
         model.addAttribute("posts",postRepository.findAllByTitleContains(title));
         return "posts";
     }
@@ -82,5 +87,12 @@ public class MainController {
         model.addAttribute("posts",postList);
         return "posts";
     }
+//    @PutMapping
+//    public void updatePostWithComment(String title, PostComment postComment){
+//        Post post = getPostsByTitle("title",);
+//
+//        String postComment = getPostsByTitle(post1.setComments(postComment));
+//    }
+
 
 }

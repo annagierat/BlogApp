@@ -6,7 +6,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -31,6 +33,29 @@ public class Post {
     }
 
     public Post(){
+
+    }
+
+    @OneToMany(cascade = CascadeType.PERSIST)
+    @JoinColumn(name="postId")
+    List<PostComment> comments = new ArrayList<>();
+
+    public void addComment(PostComment postComment){
+        comments.add(postComment);
+        postComment.setPost(this);
+    }
+
+    public void removeComment(PostComment postComment){
+        comments.remove(postComment);
+        postComment.setPost(null);
+    }
+    public List<PostComment> getComments() {
+
+        return comments;
+    }
+    public void setComments(List<PostComment> comments) {
+
+        this.comments = comments;
 
     }
 }

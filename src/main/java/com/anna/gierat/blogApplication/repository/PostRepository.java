@@ -13,4 +13,6 @@ public interface PostRepository extends CrudRepository<Post, Long> {
 
     List<Post> findAllByTitleContains(String title);
     List<Post> findAllByTitleContains(String title, Sort sort);
+    List<Post> findAllByTitleContainsOrContentContains(String title, String content);
+
 }
